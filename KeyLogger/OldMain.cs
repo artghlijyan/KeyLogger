@@ -15,7 +15,7 @@ namespace KeyLogger
 
         static long numberOfKeyStrokes = 0;
 
-        static void Main(string[] args)
+        static void MainOld(string[] args)
         {
             string folderName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
